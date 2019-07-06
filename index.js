@@ -1,6 +1,8 @@
 const express = require('express')
 const app = express()
 const bodyParser = require('body-parser')
+const cors = require('cors')
+
 var morgan = require('morgan')
 
 morgan.token('POST', (req, res) => { 
@@ -10,6 +12,7 @@ morgan.token('POST', (req, res) => {
   return post
 })
 
+app.use(cors())
 app.use(bodyParser.json())
 app.use(morgan(':method :url :status :res[content-length] - :response-time ms :POST'))
 
@@ -72,7 +75,6 @@ app.delete('/api/persons/:id', (req, res) => {
 })
 
 /* POST */
-
 app.post('/api/persons', (req, res) => {
   const name = req.body.name
   const number = req.body.number
@@ -99,6 +101,7 @@ app.post('/api/persons', (req, res) => {
   res.json(person)
 })
 
-const PORT = 3001
-app.listen(PORT)
-console.log(`Server running on port ${PORT}`)
+const PORT = process.env.PORT || 3001
+app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`)
+})
