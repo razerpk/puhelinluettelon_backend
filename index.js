@@ -68,8 +68,8 @@ app.get('/api/persons/:id', (req, res) => {
 
 /* DELETE */
 app.delete('/api/persons/:id', (req, res) => {
-  const id = Number(req.params.id)
-  persons = persons.filter(person => person.id !== id)
+
+  persons = persons.filter(person => person.id !== Number(req.params.id))
 
   res.status(204).end()
 })
@@ -77,7 +77,7 @@ app.delete('/api/persons/:id', (req, res) => {
 /* POST */
 app.post('/api/persons', (req, res) => {
 
-  const found = persons.find(person => person.name === name)
+  const found = persons.find(person => person.name === req.body.name)
 
   if (!req.body.name || !req.body.number) {
     return res.status(400).json({ 
