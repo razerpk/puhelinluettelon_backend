@@ -76,11 +76,10 @@ app.delete('/api/persons/:id', (req, res) => {
 
 /* POST */
 app.post('/api/persons', (req, res) => {
-  const name = req.body.name
-  const number = req.body.number
+
   const found = persons.find(person => person.name === name)
 
-  if (!name || !number) {
+  if (!req.body.name || !req.body.number) {
     return res.status(400).json({ 
       error: 'person information is missing' 
     })
@@ -92,8 +91,8 @@ app.post('/api/persons', (req, res) => {
   }
 
   const person = {
-    name: name,
-    number: number,
+    name: req.body.name,
+    number: req.body.number,
     id: Math.floor(Math.random()* 1000000),
   }
 
