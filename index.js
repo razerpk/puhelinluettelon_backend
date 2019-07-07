@@ -6,10 +6,10 @@ const Person = require('./models/person')
 
 var morgan = require('morgan')
 
-morgan.token('POST', (req, res) => { 
-  const post = req.method === "POST"
-  ? JSON.stringify(req.body)
-  : ' '
+morgan.token('POST', (req, res) => {
+  const post = req.method === 'POST'
+    ? JSON.stringify(req.body)
+    : ' '
   return post
 })
 
@@ -20,27 +20,27 @@ app.use(bodyParser.json())
 app.use(morgan(':method :url :status :res[content-length] - :response-time ms :POST'))
 
 let persons = [
-  { 
+  {
     name: "Arto Hellas", 
     number: "040-123456",
     id: 1
   },
-  { 
+  {
     name: "Ada Lovelace", 
     number: "39-44-5323523",
     id: 2
   },
-  { 
+  {
     name: "Dan Abramov", 
     number: "12-43-234345",
     id: 3
   },
-  { 
+  {
     name: "Mary Poppendieck", 
     number: "39-23-6423122",
     id: 4
   }
-] 
+]
 
 /* PUT */
 
@@ -52,19 +52,19 @@ app.put('/api/persons/:id', (request, response, next) => {
     number: body.number
   }
 
-  Person.findByIdAndUpdate(request.params.id, person, {new: true})
+  Person.findByIdAndUpdate(request.params.id, person, { new: true })
     .then(updatedPerson => {
       response.json(updatedPerson.toJSON())
     })
     .catch(error => next(error))
 })
 
-/* GET */ 
+/* GET */
 
 app.get('/api/persons', (req, res) => {
   Person.find({}).then(persons => {
     res.json(persons.map(person => person.toJSON()))
-  });
+  })
 })
 
 app.get('/info', (req, res) => {
@@ -90,7 +90,7 @@ app.get('/api/persons/:id', (req, res, next) => {
 
 /* DELETE */
 
-app.delete('/api/persons/:id', (req, res) => {
+app.delete('/api/persons/:id', (req, res, next) => {
 
   Person.findByIdAndRemove(req.params.id)
     .then(result => {
@@ -118,7 +118,7 @@ app.post('/api/persons', (req, res, next) => {
   person.save().then(savedPerson => {
     res.json(savedPerson.toJSON())
   })
-  .catch(error => next(error))
+    .catch(error => next(error))
 })
 
 
@@ -133,7 +133,7 @@ app.use(unknownEndpoint)
 const errorHandler = (error, request, response, next) => {
   console.error(error.message)
 
-  if (error.name === 'CastError' && error.kind == 'ObjectId') {
+  if (error.name === 'CastError' && error.kind === 'ObjectId') {
     return response.status(400).send({ error: 'malformatted id' })
   } else if (error.name === 'ValidationError') {
     return response.status(400).json({ error: error.message })
@@ -143,6 +143,7 @@ const errorHandler = (error, request, response, next) => {
 
 app.use(errorHandler)
 
+// eslint-disable-next-line no-undef
 const PORT = process.env.PORT
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`)

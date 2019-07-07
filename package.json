@@ -10,11 +10,12 @@
     "build:ui": "del -rf build && cd ../fullstack_kurssi/osa2/puhelinluettelo && npm run build --prod && copy -r build ../../../fullstack_kurssi_part3/",
     "deploy": "git push heroku master",
     "deploy:full": "npm run build:ui && git add . && git commit -m uibuild && git push && npm run deploy",
-    "logs:prod": "heroku logs --tail"
+    "logs:prod": "heroku logs --tail",
+    "lint": "eslint ."
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/razerpk/fullstack_kurssi.git"
+    "url": "git+https://github.com/razerpk/puhelinluettelon_backend.git"
   },
   "author": "Rico Pietarinen",
   "license": "ISC",
@@ -31,6 +32,7 @@
     "morgan": "^1.9.1"
   },
   "devDependencies": {
+    "eslint": "^6.0.1",
     "nodemon": "^1.19.1"
   }
 }
